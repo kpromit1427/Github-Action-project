@@ -152,17 +152,16 @@ jobs:
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
-      with:
-        version: latest
-    - name: Configure kubeconfig
+
+    - name: Configure kubeconfig for EKS
       run: |
-       mkdir -p $HOME/.kube
-       echo "${{ secrets.EKS_KUBECONFIG }}" > $HOME/.kube/config
+        aws eks update-kubeconfig \
+        --region ap-south-1 \
+        --name devopsshack-cluster
 
     - name: Deploy to EKS
       run: |
-       kubectl apply -f ds.yml
-
+        kubectl apply -f ds.yml
     
 
    
